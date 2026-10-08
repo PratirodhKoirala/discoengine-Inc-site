@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b2239">
+<meta name="description" content="See how Disco Engine moves an experiment from evidence to design, data, analysis and a scientist-approved lab notebook entry.">
+<title>How it works | Disco Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f7f9;--surface:#ffffff;--ink:#0b2239;--muted:#546a7c;--line:#d6e0e7;
+  --teal:#0fa38f;--blue:#2f6fde;--amber:#f2a33a;--violet:#7b5cd6;--coral:#e5584b;
+  --head:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Avenir Next","Segoe UI",system-ui,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#081826;--surface:#0f2438;--ink:#e8f1f7;--muted:#9db3c4;--line:#22405a}}
+:root[data-theme="dark"]{--bg:#081826;--surface:#0f2438;--ink:#e8f1f7;--muted:#9db3c4;--line:#22405a}
+html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--body)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--head);margin:0;line-height:1.08;letter-spacing:-.02em}
+p{margin:0}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{max-width:1180px;margin:auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--head);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.logo svg{width:30px;height:30px}
+.links{display:flex;align-items:center;gap:22px;font-size:15px;font-weight:500}
+.links a{text-decoration:none;color:var(--muted)}
+.links a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;background:var(--ink);color:var(--bg);font-weight:600;text-decoration:none;border:1.5px solid var(--ink);font-size:16px}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.sm{padding:9px 15px;font-size:14px}
+.links .btn{color:var(--bg)}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+
+/* hero */
+.hero{padding:72px 0 24px}
+.hero h1{font-size:clamp(40px,6.2vw,78px);max-width:880px}
+.hero .sub{font-size:clamp(18px,2vw,21px);color:var(--muted);max-width:620px;margin-top:20px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+
+/* stepper */
+.stage{margin-top:34px}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.tab{appearance:none;text-align:left;font:inherit;cursor:pointer;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:2px}
+.tab b{font-family:var(--head);font-size:20px;letter-spacing:-.01em}
+.tab span{font-size:14px;color:var(--muted);line-height:1.35}
+.tab[aria-selected="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 25%,transparent)}
+.panel{margin-top:12px;background:#ffffff;color:#0b2239;border:1.5px solid var(--line);border-radius:20px;padding:26px;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:28px;align-items:center}
+.panel svg{width:100%;height:auto;display:block}
+.side h3{font-size:26px}
+.side p{color:#546a7c;margin-top:8px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:18px;font-size:14px;color:#3d5467}
+.legend i{display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:6px;vertical-align:-2px}
+.readout{margin-top:16px;min-height:46px;padding:10px 14px;border-radius:10px;background:#eef4f7;font-size:15px;font-weight:600}
+.fine{margin-top:12px;font-size:13px;color:var(--muted)}
+.well{transition:transform .15s}
+.well:hover{stroke:#0b2239;stroke-width:2.5}
+.sweep .well{animation:pop .5s both}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+.well{transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:reduce){.sweep .well{animation:none}html{scroll-behavior:auto}}
+
+/* notebook */
+.nb{border:1.5px solid #d6e0e7;border-radius:14px;padding:18px 20px;background:#fff}
+.nb .top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.nb .top b{font-family:var(--head);font-size:19px}
+.chip{display:inline-block;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px}
+.chip.ok{background:#dff5ef;color:#0b6a5c}
+.chip.wait{background:#fdecd0;color:#8a5a0a}
+.nb .rows{display:grid;gap:10px;margin-top:14px}
+.nb .row{display:grid;grid-template-columns:90px 1fr;gap:12px;font-size:15px;border-top:1px solid #e3ebf0;padding-top:10px}
+.nb .row span:first-child{color:#546a7c}
+
+.ev{display:grid;gap:10px}
+.ev .it{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;border:1.5px solid #d6e0e7;border-radius:12px;padding:12px 14px;background:#fff}
+.ev .src{font-size:13px;font-weight:600;padding:3px 9px;border-radius:999px;background:#e4edf8;color:#1c4a99;white-space:nowrap}
+.ev .ttl{font-weight:600;font-size:15px}
+.ev .sc{font-size:13px;color:#546a7c;font-weight:600}
+.ev .meter{grid-column:1/-1;height:7px;border-radius:99px;background:#e9f0f4;overflow:hidden}
+.ev .meter i{display:block;height:100%;background:#0fa38f}
+/* sections */
+section.s{padding:84px 0}
+.s h2{font-size:clamp(30px,4.2vw,50px);max-width:760px}
+.s .lead{color:var(--muted);margin-top:14px;max-width:560px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.why svg{width:100%;height:auto}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
+.trio div{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;gap:12px;align-items:center;font-weight:600}
+.trio svg{width:26px;height:26px;flex:none}
+.apps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
+.app{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:12px}
+.app svg{width:100%;height:84px}
+.app b{font-family:var(--head);font-size:20px}
+.app span{color:var(--muted);font-size:15px;line-height:1.4}
+.apps .app:last-child:nth-child(3n+1){grid-column:1/-1}
+.soon{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:16px 18px;border:1.5px dashed var(--line);border-radius:14px}
+.soon b{font-family:var(--head);font-size:18px;margin-right:6px}
+.soon .pill{font-size:14px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--surface);border:1.5px solid var(--line);color:var(--muted)}
+.about{background:var(--ink);color:var(--bg)}
+.about p{color:color-mix(in srgb,var(--bg) 78%,transparent);max-width:560px;margin-top:16px}
+.about h2{color:var(--bg)}
+.contact{text-align:left}
+.contact .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+footer{padding:28px 24px calc(28px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;color:var(--muted);border-top:1px solid var(--line)}
+
+@media (max-width:860px){
+  .links a:not(.btn){display:none}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .panel{grid-template-columns:1fr;padding:18px}
+  .split{grid-template-columns:1fr;gap:28px}
+  .trio,.apps{grid-template-columns:1fr 1fr}
+  section.s{padding:60px 0}
+}
+@media (max-width:520px){.trio,.apps{grid-template-columns:1fr}.hero{padding:48px 0 16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a class="logo" href="index.html" aria-label="Disco Engine home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#0b2239"/><circle cx="10" cy="10" r="3" fill="#0fa38f"/><circle cx="22" cy="10" r="3" fill="#2f6fde"/><circle cx="10" cy="22" r="3" fill="#f2a33a"/><circle cx="22" cy="22" r="3" fill="#7b5cd6"/><circle cx="16" cy="16" r="3.4" fill="#fff"/></svg>
+      Disco Engine
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="how-it-works.html" aria-current="page" style="color:var(--ink)">How it works</a>
+      <a href="index.html#applications">Applications</a>
+      <a href="index.html#about">About</a>
+      <a class="btn sm" href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <h1>See how it works.</h1>
+    <p class="sub">Click through the five steps on a simulated experiment. At each step the work runs automatically and a scientist reviews it.</p>
+    <div class="stage">
+      <div class="tabs" role="tablist" aria-label="Workflow steps">
+        <button class="tab" role="tab" id="t0" aria-selected="true" aria-controls="panel" data-i="0"><b>Evidence</b><span>Sources gathered, ranked</span></button>
+        <button class="tab" role="tab" id="t1" aria-selected="false" aria-controls="panel" data-i="1" tabindex="-1"><b>Plan</b><span>Design built for you</span></button>
+        <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="panel" data-i="2" tabindex="-1"><b>Run</b><span>Data parsed and checked</span></button>
+        <button class="tab" role="tab" id="t3" aria-selected="false" aria-controls="panel" data-i="3" tabindex="-1"><b>Analyze</b><span>Analysis runs, you approve</span></button>
+        <button class="tab" role="tab" id="t4" aria-selected="false" aria-controls="panel" data-i="4" tabindex="-1"><b>Notebook writing</b><span>Drafted, then signed off</span></button>
+      </div>
+      <div class="panel" id="panel" role="tabpanel" aria-labelledby="t0">
+        <div id="viz"></div>
+        <div class="side">
+          <h3 id="stitle"></h3>
+          <p id="stext"></p>
+          <div class="legend" id="legend"></div>
+          <div class="readout" id="readout" aria-live="polite">Hover a well.</div>
+        </div>
+      </div>
+      <p class="fine">Illustrative example with simulated data, shown on a 384-well high-throughput cell viability screen. More experiment types are planned. Product screenshots coming soon.</p>
+    </div>
+  </div>
+</section>
+
+<section class="s contact" id="contact">
+  <div class="wrap">
+    <h2>Want to see it on your own experiments?</h2>
+    <p class="lead">We are meeting discovery scientists and informatics teams to shape the product and plan pilots.</p>
+    <div class="cta">
+      <a class="btn" href="mailto:hello@discoengineinc.com?subject=Disco%20Engine%20%E2%80%94%20Introduction">Email us</a>
+      <a class="btn alt" href="index.html">Back to overview</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>© <span id="year"></span> Disco Engine · <a href="index.html">Home</a> · <a href="#top">Back to top</a></footer>
+<script>
+(function(){
+  document.getElementById('year').textContent=new Date().getFullYear();
+  var ROWS='ABCDEFGHIJKLMNOP',NC=24,NR=16;
+  var IC50=[0.5,3,20,120],HILL=1.1,COL=['#0fa38f','#2f6fde','#f2a33a','#7b5cd6'];
+  var NAMES=['Compound A','Compound B','Compound C','Compound D'];
+  function dose(j){return 0.003*Math.pow(3,Math.floor((j-1)/2));}
+  function fmt(d){return d>=1?(d>=10?Math.round(d):d.toFixed(1)):d.toFixed(2);}
+  function model(p,d){return 100/(1+Math.pow(d/IC50[p],HILL));}
+  var seed=7;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+  var V=[];for(var i=0;i<NR;i++){V[i]=[];for(var j=0;j<NC;j++){
+    var v;if(j===0)v=100+(rnd()-.5)*6;else if(j===NC-1)v=5+(rnd()-.5)*6;
+    else v=model(Math.floor(i/4),dose(j))+(rnd()-.5)*8;
+    V[i][j]=Math.max(0,Math.min(106,v));}}
+  var FLAGS={'5,9':true,'12,15':true};V[5][9]=V[5][9]+38;V[12][15]=Math.max(2,V[12][15]-34);
+  function shade(v){var t=Math.max(0,Math.min(1,v/100));
+    var a=[11,34,57],b=[220,239,234];
+    return 'rgb('+a.map(function(x,k){return Math.round(x+(b[k]-x)*t);}).join(',')+')';}
+  var X0=44,Y0=44,S=24,R=9.5;
+  function plate(mode,sweep){
+    var s='<svg viewBox="0 0 620 430" role="img" aria-label="384-well plate, '+mode+' view"><g font-family="Figtree,system-ui,sans-serif" font-size="10" fill="#546a7c" text-anchor="middle">';
+    for(var j=0;j<NC;j++)s+='<text x="'+(X0+j*S)+'" y="26">'+(j+1)+'</text>';
+    for(var i=0;i<NR;i++)s+='<text x="20" y="'+(Y0+i*S+4)+'">'+ROWS[i]+'</text>';
+    s+='</g><g'+(sweep?' class="sweep"':'')+'>';
+    for(i=0;i<NR;i++)for(j=0;j<NC;j++){
+      var cx=X0+j*S,cy=Y0+i*S,p=Math.floor(i/4),fill,stroke='none',sw=0;
+      if(mode==='design'){
+        if(j===0)fill='#c9d3da';else if(j===NC-1)fill='#f2a33a';
+        else{fill=COL[p];}
+        var op=(j===0||j===NC-1)?1:(0.22+0.78*((Math.floor((j-1)/2))/10));
+        s+='<circle class="well" data-i="'+i+'" data-j="'+j+'" cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+fill+'" fill-opacity="'+op+'" '+(sweep?'style="animation-delay:'+(j*22)+'ms"':'')+'/>';
+      }else{
+        fill=shade(V[i][j]);
+        if(FLAGS[i+','+j]){stroke='#e5584b';sw=3.5;}
+        s+='<circle class="well" data-i="'+i+'" data-j="'+j+'" cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+fill+'" stroke="'+(stroke==='none'?'#b9c8d2':stroke)+'" stroke-width="'+(stroke==='none'?1:sw)+'"/>';
+      }
+    }
+    return s+'</g></svg>';
+  }
+  function curves(){
+    var L=62,T=24,W=420,H=270,xmin=-2.7,xmax=Math.log10(200);
+    function X(d){return L+(Math.log10(d)-xmin)/(xmax-xmin)*W;}
+    function Y(v){return T+H-(v/110)*H;}
+    var s='<svg viewBox="0 0 620 380" role="img" aria-label="Dose-response curves for four compounds"><g font-family="Figtree,system-ui,sans-serif" font-size="13" fill="#546a7c">';
+    [0,50,100].forEach(function(v){s+='<line x1="'+L+'" x2="'+(L+W)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#e3ebf0"/><text x="'+(L-10)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v+'%</text>';});
+    [0.01,0.1,1,10,100].forEach(function(d){s+='<line x1="'+X(d)+'" x2="'+X(d)+'" y1="'+T+'" y2="'+(T+H)+'" stroke="#eef3f6"/><text x="'+X(d)+'" y="'+(T+H+22)+'" text-anchor="middle">'+d+'</text>';});
+    s+='<text x="'+(L+W/2)+'" y="'+(T+H+48)+'" text-anchor="middle">Dose (µM)</text>';
+    s+='<text transform="translate(16 '+(T+H/2)+') rotate(-90)" text-anchor="middle">Viability</text></g>';
+    for(var p=0;p<4;p++){
+      var d='';for(var k=0;k<=70;k++){var dd=Math.pow(10,xmin+(xmax-xmin)*k/70);d+=(k?'L':'M')+X(dd).toFixed(1)+' '+Y(model(p,dd)).toFixed(1);}
+      s+='<path d="'+d+'" fill="none" stroke="'+COL[p]+'" stroke-width="3.5" stroke-linecap="round"/>';
+      for(var j=1;j<=21;j+=2){var a=0,q;for(q=0;q<4;q++)a+=(V[p*4+q][j]+V[p*4+q][j+1])/8;s+='<circle cx="'+X(dose(j)).toFixed(1)+'" cy="'+Y(a).toFixed(1)+'" r="4.5" fill="#fff" stroke="'+COL[p]+'" stroke-width="2.5"/>';}
+    }
+    s+='<g font-family="Figtree,system-ui,sans-serif" font-size="14" fill="#0b2239">';
+    for(p=0;p<4;p++){var y=60+p*52;s+='<rect x="500" y="'+(y-14)+'" width="14" height="14" rx="4" fill="'+COL[p]+'"/><text x="522" y="'+y+'" font-weight="600">'+NAMES[p]+'</text><text x="522" y="'+(y+19)+'" fill="#546a7c">IC50 ≈ '+IC50[p]+' µM</text>';}
+    return s+'</g></svg>';
+  }
+  function notebook(){
+    return '<div class="nb"><div class="top"><b>Compound panel, 72 h viability, 384-well</b><span class="chip wait">Awaiting review</span></div>'+
+    '<div class="rows"><div class="row"><span>Objective</span><span>Rank four compounds by potency.</span></div>'+
+    '<div class="row"><span>Result</span><span>A is most potent (IC50 ≈ 0.5 µM). D is weakest.</span></div>'+
+    '<div class="row"><span>QC</span><span>2 wells flagged and excluded from the fit.</span></div>'+
+    '<div class="row"><span>Next step</span><span>Confirm A and B in a second cell line.</span></div></div></div>';
+  }
+  function evidence(){
+    var items=[['PubMed','Target expression in disease samples',96],['PubMed','Mechanism and pathway study',88],['ClinicalTrials.gov','Related trial records',74],['UniProt','Protein annotation and domains',61]];
+    return '<div class="ev">'+items.map(function(it){return '<div class="it"><span class="src">'+it[0]+'</span><span class="ttl">'+it[1]+'</span><span class="sc">'+it[2]+'</span><div class="meter"><i style="width:'+it[2]+'%"></i></div></div>';}).join('')+'</div>';
+  }
+  var STEPS=[
+    {t:'Gather the evidence',x:'Disco gathers and ranks evidence for your target from PubMed, UniProt and ClinicalTrials.gov. You review it before it shapes the design.',lg:[],h:''},
+    {t:'Plan the experiment',x:'Disco turns your objective into an experiment design, placing controls, doses and replicates automatically. You review the design.',lg:[['#c9d3da','Untreated'],['#0fa38f','Compound, rising dose'],['#f2a33a','Positive control']],h:'Hover a well.'},
+    {t:'Load data and check quality',x:'Instrument files are parsed and matched to the plan. QC runs automatically and flags odd results for you to review.',lg:[['#dcefea','Healthy'],['#0b2239','Low viability'],['#e5584b','Flagged by QC']],h:'Hover a well.'},
+    {t:'Analyze',x:'Analysis runs automatically and stays tied to the design. You approve the results before they are used.',lg:[],h:''},
+    {t:'Write the lab notebook entry',x:'The lab notebook entry is drafted for you with results, figures and QC. Nothing is final until a scientist approves it.',lg:[],h:''}
+  ];
+  var swept=false,NT=STEPS.length;
+  function show(n){
+    var v=document.getElementById('viz'),ro=document.getElementById('readout');
+    document.getElementById('stitle').textContent=STEPS[n].t;
+    document.getElementById('stext').textContent=STEPS[n].x;
+    document.getElementById('legend').innerHTML=STEPS[n].lg.map(function(l){return '<span><i style="background:'+l[0]+';'+(l[1]==='Flagged by QC'?'box-shadow:inset 0 0 0 3px #e5584b;background:#fff':'')+'"></i>'+l[1]+'</span>';}).join('');
+    var isPlate=(n===1||n===2);
+    ro.style.display=isPlate?'block':'none';ro.textContent=STEPS[n].h;
+    var sweep=(n===1&&!swept);if(n===1)swept=true;
+    v.innerHTML=n===0?evidence():n===1?plate('design',sweep):n===2?plate('data'):n===3?curves():notebook();
+    document.querySelectorAll('.tab').forEach(function(b,i){b.setAttribute('aria-selected',i===n);b.tabIndex=i===n?0:-1;});
+    document.getElementById('panel').setAttribute('aria-labelledby','t'+n);
+    if(isPlate){v.querySelectorAll('.well').forEach(function(w){
+      function info(){var i=+w.dataset.i,j=+w.dataset.j,id=ROWS[i]+(j+1),txt;
+        if(n===1){txt=j===0?'Untreated':j===NC-1?'Positive control':NAMES[Math.floor(i/4)]+' at '+fmt(dose(j))+' \u00b5M';}
+        else{txt=Math.round(V[i][j])+'% viability'+(FLAGS[i+','+j]?' (flagged by QC)':'');}
+        ro.textContent=id+': '+txt;}
+      w.addEventListener('mouseenter',info);w.addEventListener('click',info);});}
+  }
+  document.querySelectorAll('.tab').forEach(function(b){
+    b.addEventListener('click',function(){show(+b.dataset.i);});
+    b.addEventListener('keydown',function(e){
+      var i=+b.dataset.i,n=null;
+      if(e.key==='ArrowRight')n=(i+1)%NT;else if(e.key==='ArrowLeft')n=(i+NT-1)%NT;
+      if(n!==null){e.preventDefault();show(n);document.getElementById('t'+n).focus();}});
+  });
+  show(0);
+})();
+</script>
+</body>
+</html>
